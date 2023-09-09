@@ -77,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (_formKey.currentState!.validate()) {
                         signInWithEmailAndPassword();
                         print("validation is done");
+                        Navigator.pushReplacementNamed(context, '/home');
                       }
                     },
                     child: const Text('Login'),
