@@ -13,7 +13,7 @@ void main() async {
   );
   runApp(MaterialApp(routes: {
     //'/' : (context) => Loading(),
-    '/': (context) => const AuthenticationPage(),
+    '/': (context) => const LoginPage(),
     '/home': (context) => const Home(),
   }));
 }

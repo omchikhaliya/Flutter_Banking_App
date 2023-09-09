@@ -8,8 +8,20 @@ class Authentication {
       await _auth.canCheckBiometrics || await _auth.isDeviceSupported();
   static Future<bool> authentication() async {
     try {
+      final availableBiometrics = await _auth.getAvailableBiometrics();
+      print('Available biometrics: $availableBiometrics');
       if (!await canAuthenticate()) return false;
-      return await _auth.authenticate(localizedReason: "get into the app");
+      return await _auth.authenticate(
+        localizedReason: "get into the app",
+        options: const AuthenticationOptions(
+        //Shows error dialog for system-related issues
+        useErrorDialogs: true,
+        //If true, auth dialog is show when app open from background
+        stickyAuth: true,
+        //Prevent non-biometric auth like such as pin, passcode.
+        biometricOnly: true,
+      ),
+      );
     } catch (e) {
       print('error $e');
       return false;
