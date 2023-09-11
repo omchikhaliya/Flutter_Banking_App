@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBZX08YI6uwpB9k9QgLoLPFYzKot7cH4SE',
-    appId: '1:1010934675634:web:11fceb6cb0f08b0ab3b1ab',
-    messagingSenderId: '1010934675634',
-    projectId: 'flutterbankingapplication',
-    authDomain: 'flutterbankingapplication.firebaseapp.com',
-    storageBucket: 'flutterbankingapplication.appspot.com',
-    measurementId: 'G-5HDW0TK30Q',
+    apiKey: 'AIzaSyA758tiXTn2BacjHaJwUNmTWYcyv0ZhlUA',
+    appId: '1:299233562742:web:c317dc197dc7ce28b54f57',
+    messagingSenderId: '299233562742',
+    projectId: 'flutterbankingapplicatio-54e67',
+    authDomain: 'flutterbankingapplicatio-54e67.firebaseapp.com',
+    storageBucket: 'flutterbankingapplicatio-54e67.appspot.com',
+    measurementId: 'G-G6X5J1XS46',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDdnYJ5D97w_xAVgplP7WGTwgfBMKgCXmQ',
-    appId: '1:1010934675634:android:df870e712511e451b3b1ab',
-    messagingSenderId: '1010934675634',
-    projectId: 'flutterbankingapplication',
-    storageBucket: 'flutterbankingapplication.appspot.com',
+    apiKey: 'AIzaSyAbRzL345bNjiumd443WCW_1U7EzaDsheg',
+    appId: '1:299233562742:android:04e11d87b3b782d8b54f57',
+    messagingSenderId: '299233562742',
+    projectId: 'flutterbankingapplicatio-54e67',
+    storageBucket: 'flutterbankingapplicatio-54e67.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBnp0H8YE1cldgsA-OCrtn4bO0pruwm5ms',
-    appId: '1:1010934675634:ios:dd79686ea465d3adb3b1ab',
-    messagingSenderId: '1010934675634',
-    projectId: 'flutterbankingapplication',
-    storageBucket: 'flutterbankingapplication.appspot.com',
+    apiKey: 'AIzaSyBYPqXpamt-MLkF3FziuivAw1ZZKtkwPl4',
+    appId: '1:299233562742:ios:70da4007281031acb54f57',
+    messagingSenderId: '299233562742',
+    projectId: 'flutterbankingapplicatio-54e67',
+    storageBucket: 'flutterbankingapplicatio-54e67.appspot.com',
     iosBundleId: 'com.example.bankingApplication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBnp0H8YE1cldgsA-OCrtn4bO0pruwm5ms',
-    appId: '1:1010934675634:ios:ef5937952d92de07b3b1ab',
-    messagingSenderId: '1010934675634',
-    projectId: 'flutterbankingapplication',
-    storageBucket: 'flutterbankingapplication.appspot.com',
+    apiKey: 'AIzaSyBYPqXpamt-MLkF3FziuivAw1ZZKtkwPl4',
+    appId: '1:299233562742:ios:6f72ee7dbc1858edb54f57',
+    messagingSenderId: '299233562742',
+    projectId: 'flutterbankingapplicatio-54e67',
+    storageBucket: 'flutterbankingapplicatio-54e67.appspot.com',
     iosBundleId: 'com.example.bankingApplication.RunnerTests',
   );
 }

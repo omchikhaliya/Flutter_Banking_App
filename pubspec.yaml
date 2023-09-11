@@ -39,6 +39,8 @@ dependencies:
   firebase_auth: ^4.9.0
   flutter_spinkit: ^5.2.0
   local_auth: ^2.1.7
+  firebase_storage: ^11.2.6
+  firebase_database: ^10.2.5
 
 dev_dependencies:
   flutter_test:

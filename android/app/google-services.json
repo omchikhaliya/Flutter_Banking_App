@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1010934675634",
-    "project_id": "flutterbankingapplication",
-    "storage_bucket": "flutterbankingapplication.appspot.com"
+    "project_number": "299233562742",
+    "project_id": "flutterbankingapplicatio-54e67",
+    "storage_bucket": "flutterbankingapplicatio-54e67.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1010934675634:android:df870e712511e451b3b1ab",
+        "mobilesdk_app_id": "1:299233562742:android:04e11d87b3b782d8b54f57",
         "android_client_info": {
           "package_name": "com.example.banking_application"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDdnYJ5D97w_xAVgplP7WGTwgfBMKgCXmQ"
+          "current_key": "AIzaSyAbRzL345bNjiumd443WCW_1U7EzaDsheg"
         }
       ],
       "services": {
