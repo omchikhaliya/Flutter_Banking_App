@@ -28,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
           email: _email.text, password: _password.text);
 
       islogin = true;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         islogin = false;
@@ -115,9 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                              ),
                               onPressed: () async {
                                 bool auth =
                                     await Authentication.authentication();
@@ -127,14 +126,14 @@ class _LoginPageState extends State<LoginPage> {
                                       context, '/home');
                                 }
                               },
-                              icon: Icon( Icons.fingerprint),
-                              label: Text("Authenticate",
+                              icon: Icon(Icons.fingerprint),
+                              label: Text(
+                                "Authenticate",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18.0,
                                 ),
-                              )
-                          ),
+                              )),
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -148,17 +147,18 @@ class _LoginPageState extends State<LoginPage> {
                                 signInWithEmailAndPassword();
                                 print("validation is done");
 
-                                if(islogin) {
+                                if (islogin) {
                                   Navigator.pushReplacementNamed(
                                       context, '/home');
                                 }
                               }
                             },
-                            child: const Text('Login',
+                            child: const Text(
+                              'Login',
                               style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                            ),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.0,
+                              ),
                             ),
                           ),
                         ),

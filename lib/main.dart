@@ -1,3 +1,4 @@
+import 'package:banking_application/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_application/pages/Loading.dart';
 import 'package:banking_application/pages/login_page.dart';
@@ -13,7 +14,8 @@ void main() async {
   );
   runApp(MaterialApp(routes: {
     //'/' : (context) => Loading(),
-    '/': (context) => const LoginPage(),
+    // '/': (context) => const LoginPage(),
+    '/': (context) => const Signup(),
     '/home': (context) => const Home(),
   }));
 }
