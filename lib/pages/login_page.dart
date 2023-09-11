@@ -18,18 +18,27 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
+  bool islogin = false;
+
   signInWithEmailAndPassword() async {
     try {
+      print(_email);
+      print(_password);
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text, password: _password.text);
+
+      islogin = true;
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        islogin = false;
         return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("No user found for that email."),
           ),
         );
       } else if (e.code == 'wrong-password') {
+        islogin = false;
         return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Wrong password provided for that user"),
@@ -138,8 +147,11 @@ class _LoginPageState extends State<LoginPage> {
                               if (_formKey.currentState!.validate()) {
                                 signInWithEmailAndPassword();
                                 print("validation is done");
-                                Navigator.pushReplacementNamed(
-                                    context, '/home');
+
+                                if(islogin) {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home');
+                                }
                               }
                             },
                             child: const Text('Login',
