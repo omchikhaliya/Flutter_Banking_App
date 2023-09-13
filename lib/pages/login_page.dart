@@ -1,10 +1,11 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_application/pages/authentication.dart';
 import 'package:banking_application/pages/home.dart';
 import 'package:flutter/services.dart';
+import 'package:localstorage/localstorage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,6 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _password = TextEditingController();
 
   bool islogin = false;
+  final CollectionReference customers = FirebaseFirestore.instance.collection('customers');
+
+  //final LocalStorage storage = new LocalStorage('name.json');
+
+  //storage.setItem('name_' ,'devanshu');
 
   signInWithEmailAndPassword() async {
     try {
@@ -47,8 +53,36 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<bool> verifyCustomer(String customerId, String pin) async {
+    try {
+      final QuerySnapshot<Object?> querySnapshot =
+      await customers.where('customer_ID', isEqualTo: customerId).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final DocumentSnapshot<Object?> documentSnapshot = querySnapshot.docs[0];
+        final customerData = documentSnapshot.data() as Map<String, dynamic>;
+        final storedPin = customerData['pin'].toString();
+
+        // Compare the provided PIN with the stored PIN
+        if (pin == storedPin) {
+          return true; // PIN is correct
+        }
+      }
+
+      return false; // Customer not found or PIN is incorrect
+    } catch (e) {
+      print('Error verifying customer: $e');
+      return false; // Return false if there is an error
+       }
+  }
+
+  Map<dynamic,dynamic> data = {};
+
   @override
   Widget build(BuildContext context) {
+    data = data.isEmpty ? ModalRoute.of(context)?.settings.arguments as Map :data;
+    print(data);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -81,18 +115,32 @@ class _LoginPageState extends State<LoginPage> {
                     child: OverflowBar(
                       overflowSpacing: 20,
                       children: [
+                        Text(
+                            "Welcome, Mr. ${data['name']}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                        Text(
+                          "Enter your pin to login",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 21.0,
+                          ),
+                        ),
                         TextFormField(
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 22.0,
                           ),
                           controller: _email,
-                          validator: (text) {
+                          /*validator: (text) {
                             if (text == null || text.isEmpty) {
                               return 'Email is empty';
-                            }
-                            return null;
-                          },
+                            }*/
+                            //return null;
+                          //},
                           decoration: const InputDecoration(hintText: "Email"),
                         ),
                         TextFormField(
@@ -108,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           decoration:
-                              const InputDecoration(hintText: "Password"),
+                              const InputDecoration(hintText: "Pin"),
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -123,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                 print("can authenticate: $auth");
                                 if (auth) {
                                   Navigator.pushReplacementNamed(
-                                      context, '/home');
+                                      context, '/home',arguments: {'name' : data['name']});
                                 }
                               },
                               icon: Icon(Icons.fingerprint),
@@ -144,12 +192,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                signInWithEmailAndPassword();
-                                print("validation is done");
 
+                                if(_email != "") {
+                                  signInWithEmailAndPassword();
+                                  //print("validation is done");
+                                }
+                                else
+                                  {
+                                    verifyCustomer(data['id'], _password.text);
+                                  }
                                 if (islogin) {
                                   Navigator.pushReplacementNamed(
-                                      context, '/home');
+                                      context, '/home',arguments: {'name' : data['name']});
                                 }
                               }
                             },
