@@ -6,6 +6,7 @@ import 'package:banking_application/pages/authentication.dart';
 import 'package:banking_application/pages/home.dart';
 import 'package:flutter/services.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,11 +22,54 @@ class _LoginPageState extends State<LoginPage> {
 
   bool islogin = false;
   final CollectionReference customers = FirebaseFirestore.instance.collection('customers');
-
+  String ID = "";
+  String name ="";
   //final LocalStorage storage = new LocalStorage('name.json');
 
   //storage.setItem('name_' ,'devanshu');
+  @override
+  void initstate() async
+  {
+    print("initial");
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    name = pref.getString('name')!;
+    ID = pref.getString('id')!;
+    
+    print(name);
+    print(ID);
+  }
 
+  Future<bool> verifyCustomer(String pin) async {
+    try {
+      print("in login ");
+      final QuerySnapshot<Object?> querySnapshot =
+      await customers.where('customer_ID', isEqualTo: '111112').get();
+      print(querySnapshot);
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final DocumentSnapshot<Object?> documentSnapshot = querySnapshot.docs[0];
+        final customerData = documentSnapshot.data() as Map<String, dynamic>;
+        final storedPin = customerData['MPIN'].toString();
+        print(storedPin);
+        // Compare the provided PIN with the stored PIN
+        if (pin == storedPin) {
+          islogin = true;
+          return true; // PIN is correct
+        }
+
+      }
+      else
+      {
+        print(
+          "not found"
+        );
+      }
+      return false; // Customer not found or PIN is incorrect
+    } catch (e) {
+      print('Error verifying customer: $e');
+      return false; // Return false if there is an error
+    }
+  }
   signInWithEmailAndPassword() async {
     try {
       print(_email);
@@ -53,28 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<bool> verifyCustomer(String customerId, String pin) async {
-    try {
-      final QuerySnapshot<Object?> querySnapshot =
-      await customers.where('customer_ID', isEqualTo: customerId).get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        final DocumentSnapshot<Object?> documentSnapshot = querySnapshot.docs[0];
-        final customerData = documentSnapshot.data() as Map<String, dynamic>;
-        final storedPin = customerData['pin'].toString();
-
-        // Compare the provided PIN with the stored PIN
-        if (pin == storedPin) {
-          return true; // PIN is correct
-        }
-      }
-
-      return false; // Customer not found or PIN is incorrect
-    } catch (e) {
-      print('Error verifying customer: $e');
-      return false; // Return false if there is an error
-       }
-  }
 
   Map<dynamic,dynamic> data = {};
 
@@ -190,17 +213,18 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
+                            onPressed: () async{
 
-                                if(_email != "") {
+                              if (_formKey.currentState!.validate()) {
+                                await verifyCustomer(_password.text);// signInWithEmailAndPassword();
+                                /*if(_email != "") {
                                   signInWithEmailAndPassword();
                                   //print("validation is done");
                                 }
                                 else
                                   {
                                     verifyCustomer(data['id'], _password.text);
-                                  }
+                                  }*/
                                 if (islogin) {
                                   Navigator.pushReplacementNamed(
                                       context, '/home',arguments: {'name' : data['name']});

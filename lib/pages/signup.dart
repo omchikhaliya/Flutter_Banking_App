@@ -47,8 +47,9 @@ class _SignupState extends State<Signup> {
         }
       });
       */
-
-      final QuerySnapshot<Object?> querySnapshot = await customers.where('customer_ID', isEqualTo: customerId).get();
+        print(customerId);
+        final QuerySnapshot<Object?> querySnapshot = await customers.where('customer_ID', isEqualTo: customerId).get();
+      print("inside ");
       print(querySnapshot.docs);
       if (querySnapshot.docs.isNotEmpty) {
         // Customer with the given ID found
