@@ -35,6 +35,8 @@ class _LoadingState extends State<Loading> {
       {
         //For everyother time loggin
         print("else");
+        String ID = pref.getString('id')!;
+        print(ID);
         Navigator.pushReplacementNamed(context,'/login_page',arguments: {'name' : name1});
       }
   }

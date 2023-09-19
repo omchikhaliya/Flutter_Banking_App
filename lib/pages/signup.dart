@@ -141,6 +141,13 @@ class _SignupState extends State<Signup> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('name', customerName);
         pref.setString('id', customerId);
+
+        String name = pref.getString('name')!;
+        String ID = pref.getString('id')!;
+
+        print(name);
+        print(ID);
+
         Navigator.pushReplacementNamed(context,'/login_page',arguments: {'name' : customerName,'id': customerId});
       } else {
         print('Customer not found');

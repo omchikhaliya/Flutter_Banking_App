@@ -27,23 +27,30 @@ class _LoginPageState extends State<LoginPage> {
   //final LocalStorage storage = new LocalStorage('name.json');
 
   //storage.setItem('name_' ,'devanshu');
-  @override
-  void initstate() async
+
+  void loadData() async
   {
-    print("initial");
     SharedPreferences pref = await SharedPreferences.getInstance();
     name = pref.getString('name')!;
     ID = pref.getString('id')!;
-    
+
     print(name);
     print(ID);
   }
+
+  @override
+  void initState()
+  {
+    print("initial");
+    loadData();
+  }
+
 
   Future<bool> verifyCustomer(String pin) async {
     try {
       print("in login ");
       final QuerySnapshot<Object?> querySnapshot =
-      await customers.where('customer_ID', isEqualTo: '111112').get();
+      await customers.where('customer_ID', isEqualTo: ID).get();
       print(querySnapshot);
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -55,6 +62,12 @@ class _LoginPageState extends State<LoginPage> {
         if (pin == storedPin) {
           islogin = true;
           return true; // PIN is correct
+        }
+        else{
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(
+              content: Text("Invalid PIN"),
+          ));
         }
 
       }
@@ -152,20 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 21.0,
                           ),
                         ),
-                        TextFormField(
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 22.0,
-                          ),
-                          controller: _email,
-                          /*validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Email is empty';
-                            }*/
-                            //return null;
-                          //},
-                          decoration: const InputDecoration(hintText: "Email"),
-                        ),
+                        
                         TextFormField(
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
