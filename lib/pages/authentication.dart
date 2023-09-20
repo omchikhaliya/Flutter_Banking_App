@@ -4,9 +4,26 @@ import 'package:local_auth/local_auth.dart';
 
 class Authentication {
   static final _auth = LocalAuthentication();
+
+
   static Future<bool> canAuthenticate() async =>
       await _auth.canCheckBiometrics || await _auth.isDeviceSupported();
+
   static Future<bool> authentication() async {
+    final List<BiometricType> availableBiometrics =
+    await _auth.getAvailableBiometrics();
+
+    if (availableBiometrics.isNotEmpty) {
+      // Some biometrics are enrolled.
+    }
+
+    if (availableBiometrics.contains(BiometricType.strong) ||
+        availableBiometrics.contains(BiometricType.face)) {
+      // Specific types of biometrics are available.
+      // Use checks like this with caution!
+    }
+    print(availableBiometrics);
+
     try {
       final availableBiometrics = await _auth.getAvailableBiometrics();
       print('Available biometrics: $availableBiometrics');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -8,6 +9,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  String name1="";
+  String CustId = "";
+
+  @override
+  void initstate()
+  async {
+    super.initState();
+    final pref = await SharedPreferences.getInstance();
+    name1 = pref.getString('name') ?? '';
+    CustId = pref.getString('id') ?? '';
+    // pref.setString('name', customerName);
+    // pref.setString('id', customerId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +32,8 @@ class _HomeState extends State<Home> {
           child: Text('Home page'),
         ),
       ),
-      body: const Center(
-        child: Text('Welcome to home page'),
+      body:  Center(
+        child: Text('Welcome to home page ${name1}'),
       ),
     );
   }

@@ -41,6 +41,10 @@ dependencies:
   local_auth: ^2.1.7
   firebase_storage: ^11.2.6
   firebase_database: ^10.2.5
+  localstorage: ^4.0.0+1
+  shared_preferences: ^2.2.1
+  cloud_firestore: ^4.9.1
+  email_otp: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -92,5 +96,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
+  # For details regardin5g fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
