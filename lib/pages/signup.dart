@@ -62,6 +62,10 @@ class _SignupState extends State<Signup> {
         return email1;
 
       } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(
+          content: Text("Customer not found"),
+        ));
         print('Customer not found');
         return null;
       }
@@ -222,6 +226,10 @@ class _SignupState extends State<Signup> {
                       if (email == emailController.text.trim()) {
                         sendOTP(email);
                       } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Enter correct details."),
+                        ));
                         // Implement OTP verification and signup logic here
                         // You can compare otpController.text with the expected OTP
                       }
@@ -253,6 +261,10 @@ class _SignupState extends State<Signup> {
                         if (!verifyOtpField) {
                           verifyOTP();
                         } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Oops, OTP is incorrect"),
+                          ));
                           // Implement OTP verification and signup logic here
                         }
                       }
