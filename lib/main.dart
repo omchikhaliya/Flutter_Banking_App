@@ -7,6 +7,7 @@ import 'firebase_options.dart';
 import 'package:banking_application/pages/home.dart';
 import 'package:banking_application/pages/authentication.dart';
 import 'package:banking_application/pages/signup.dart';
+import 'package:banking_application/pages/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,13 +15,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MaterialApp(
-
-      routes: {
-    '/' : (context) => Loading(),
+  runApp(MaterialApp(routes: {
+    '/': (context) => Loading(),
     //'/' : (context) => Signup(),
     '/login_page': (context) => const LoginPage(),
     '/home': (context) => const Home(),
     '/sign_up': (context) => const Signup(),
+    '/profile': (context) => UserProfileBody(),
   }));
 }
