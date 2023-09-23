@@ -1,3 +1,4 @@
+import 'package:banking_application/pages/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_application/pages/Loading.dart';
 import 'package:banking_application/pages/login_page.dart';
@@ -21,6 +22,7 @@ void main() async {
     '/login_page': (context) => const LoginPage(),
     '/home': (context) => const Home(),
     '/sign_up': (context) => const Signup(),
-    '/profile': (context) => UserProfileBody(),
+    '/profile': (context) => Profile(),
+    '/transaction': (context) => TransactionPage(),
   }));
 }

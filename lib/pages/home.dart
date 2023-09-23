@@ -36,6 +36,13 @@ class _HomeState extends State<Home> {
         title: Text('My Bank'),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.account_circle_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+              //Navigator.pushNamed(context, '/profile');
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
               // Add settings functionality here
@@ -170,7 +177,7 @@ class _HomeState extends State<Home> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Add view all accounts functionality here
+                    Navigator.pushNamed(context, '/transaction');
                   },
                   icon: Icon(Icons.account_balance_wallet),
                   label: Text('View All Accounts'),
