@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
             children: <Widget>[
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('../../assets/images/logo_ba.jpg'),
+                backgroundImage: AssetImage('assets/images/logo_ba.jpg'),
               ),
               const Text(
                 "Devanshu Chipani",
