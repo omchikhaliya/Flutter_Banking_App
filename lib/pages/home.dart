@@ -9,7 +9,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String name1 = "";
+
+  String name1="";
   String CustId = "";
 
   void setvariables() async {
@@ -28,6 +29,7 @@ class _HomeState extends State<Home> {
   }
 
   bool isAccountDetailsExpanded = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +167,26 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/genrate_qr');
+                    // Add transfer money functionality here
+                  },
+                  icon: Icon(Icons.qr_code),
+                  label: Text('Qr code'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/scan_qr');
+                  },
+                  icon: Icon(Icons.qr_code_scanner),
+                  label: Text('scan & pay'),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[

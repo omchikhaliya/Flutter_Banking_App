@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   //storage.setItem('name_' ,'devanshu');
 
+
   void loadData() async
   {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -41,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState()
   {
+    super.initState();
     print("initial");
     loadData();
   }
