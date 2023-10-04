@@ -69,8 +69,7 @@ class _ScanqrState extends State<Scanqr> {
                   MobileScanner(
                     //allowDuplicates = true;
                     onDetect: (capture) {
-                      if(!isScanCompleted)
-                      {
+                      if(!isScanCompleted) {
                         final List<Barcode> barcodes = capture.barcodes;
                         final Uint8List? image = capture.image;
                         for (final barcode in barcodes) {
@@ -81,11 +80,21 @@ class _ScanqrState extends State<Scanqr> {
                         print(image);
                         /*
                         String code = capture.raw ?? '---'; //rawValue ?? '---';*/
-                        isScanCompleted = true;
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => QRPayment(
+                        if (barcodes.isNotEmpty) {
+                          // Assuming you want to use the first detected barcode
+                          String? qrCodeData = barcodes.first.rawValue;
 
-                        )
-                        ));/**/ // '/qr_payment',{code: code});
+                          // Navigate to the QRPayment page and pass the scanned QR code data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  QRPayment(qrData: qrCodeData),
+                            ),
+                          );
+                          isScanCompleted = true;
+                          //Navigator.push(context,MaterialPageRoute(builder: (context) => QRPayment()));/**/ // '/qr_payment',{code: code});
+                        }
                       }
                     },
                   ),

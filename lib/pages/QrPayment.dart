@@ -9,16 +9,14 @@ late final String code;
 class QRPayment extends StatefulWidget {
 
 
-
-  const QRPayment({super.key});
+  final String? qrData;
+  const QRPayment({required this.qrData, Key? key}) : super(key: key);
 
   @override
   State<QRPayment> createState() => _QRPaymentState();
 }
 
 class _QRPaymentState extends State<QRPayment> {
-
-
 
   /*late final String code;
   late final Function() closescreen;

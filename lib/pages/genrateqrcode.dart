@@ -23,8 +23,9 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
   String name1="";
   String CustId = "";
   String custId = '';
-  void setvariables() async {
-    super.initState();
+
+  Future<void> setvariables() async {
+
     final pref = await SharedPreferences.getInstance();
     name1 = await pref.getString('name') ?? '';
     CustId = await pref.getString('id') ?? '';
@@ -40,7 +41,10 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
 
   @override
   void initState() {
-     setvariables();
+    super.initState();
+     setvariables().then((_) {
+       setState(() {}); // Trigger a rebuild after setting variables
+     });
   }
 
   @override
@@ -50,7 +54,7 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
     ''';
     */
     //initState();
-    //setvariables();
+    //1setvariables();
     return Scaffold(
       appBar: AppBar(
         title: Text('Generate QR Code'),
