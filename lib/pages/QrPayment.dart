@@ -22,6 +22,9 @@ class _QRPaymentState extends State<QRPayment> {
   late final Function() closescreen;
   */
 
+  String data = qrData;
+
+  static get qrData => null;
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -37,7 +40,7 @@ class _QRPaymentState extends State<QRPayment> {
             children: [
               //show qr here
               QrImageView(
-                data : '',
+                data : data,
                 version: QrVersions.auto,
                 size: 150.0,
               ),
