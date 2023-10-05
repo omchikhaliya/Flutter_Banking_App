@@ -9,9 +9,9 @@ late final String code;
 class QRPayment extends StatefulWidget {
 
 
-  final String? qrData;
-  const QRPayment({required this.qrData, Key? key}) : super(key: key);
-
+  //final String? qrData;
+  //const QRPayment({required this.qrData, Key? key}) : super(key: key);
+  const QRPayment({super.key});
   @override
   State<QRPayment> createState() => _QRPaymentState();
 }
@@ -21,12 +21,16 @@ class _QRPaymentState extends State<QRPayment> {
   /*late final String code;
   late final Function() closescreen;
   */
+  Map<dynamic,dynamic> Data = {};
 
-  String data = qrData;
-
-  static get qrData => null;
+  //String data = qrData;
   @override
   Widget build(BuildContext context) {
+
+     Data = Data.isEmpty ? ModalRoute.of(context)?.settings.arguments as Map : {'qrCodeData':"111111"};
+
+    String QrData = Data['qrCodeData'];
+
     return  Scaffold(
       appBar: AppBar(
         title: Text('Scan Qr Code & Pay'),
@@ -40,7 +44,7 @@ class _QRPaymentState extends State<QRPayment> {
             children: [
               //show qr here
               QrImageView(
-                data : data,
+                data : QrData,
                 version: QrVersions.auto,
                 size: 150.0,
               ),
@@ -53,7 +57,7 @@ class _QRPaymentState extends State<QRPayment> {
                 ),
               ),
               SizedBox(height: 10,),
-              Text('data',
+              Text(QrData,
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 18,

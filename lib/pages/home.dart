@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       trailing: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
+                        duration: Duration(milliseconds: 500),
                         transitionBuilder: (child, animation) {
                           return ScaleTransition(
                             scale: animation,
@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
                       },
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
+                      duration: Duration(milliseconds: 50),
                       height: isAccountDetailsExpanded ? 220 : 0,
                       child: const Column(
                         children: <Widget>[
@@ -192,14 +192,15 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Add transfer money functionality here
+
+                    Navigator.pushNamed(context, '/transaction');
                   },
                   icon: Icon(Icons.send),
                   label: Text('Transfer Money'),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/transaction');
+                    // Add transfer money functionality here
                   },
                   icon: Icon(Icons.account_balance_wallet),
                   label: Text('View All Accounts'),

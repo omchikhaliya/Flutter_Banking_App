@@ -11,7 +11,7 @@ Widget _buildTextField(TextEditingController controller, String label,
     decoration: InputDecoration(
       labelText: label,
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide:  BorderSide(color: Colors.black),
         borderRadius: BorderRadius.circular(20.0),
       ),
       errorText: errorText,
@@ -38,15 +38,18 @@ class _TransactionPageState extends State<TransactionPage> {
   FocusNode receiverAccountFocus = FocusNode();
   FocusNode amountFocus = FocusNode();
 
-  String senderValidationMessage = "";
-  String receiverValidationMessage = "";
-  String amountValidationMessage = "";
-  String pinValidationMessage = "";
+  String? senderValidationMessage;
+  String? receiverValidationMessage;
+  String? amountValidationMessage;
+  String? pinValidationMessage;
 
   @override
   void initState() {
     super.initState();
 
+    setState(() {
+      senderValidationMessage;
+    });
     // Attach listeners to the fields to trigger validations when leaving the field
     senderAccountFocus.addListener(() {
       validateSenderAccount(
@@ -87,7 +90,7 @@ class _TransactionPageState extends State<TransactionPage> {
       if (accountQuery.docs.isNotEmpty) {
         // Sender account number found
         setState(() {
-          senderValidationMessage = "";
+          senderValidationMessage = null;
         });
       } else {
         // Sender account number not found
@@ -128,7 +131,7 @@ class _TransactionPageState extends State<TransactionPage> {
       if (accountQuery.docs.isNotEmpty) {
         // Receiver account number found
         setState(() {
-          receiverValidationMessage = "";
+          receiverValidationMessage = null;
         });
       } else {
         // Receiver account number not found
@@ -162,7 +165,7 @@ class _TransactionPageState extends State<TransactionPage> {
         final balance = (document as Map)['balance'];
         if (balance >= parsedAmount) {
           setState(() {
-            amountValidationMessage = "";
+            amountValidationMessage = null;
           });
         } else {
           setState(() {
@@ -245,6 +248,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     _buildTextField(
                       senderAccountController,
                       "Sender's Account No",
+                      keyboardType: TextInputType.number,
                       focusNode: senderAccountFocus,
                       errorText: senderValidationMessage,
                     ),
@@ -252,6 +256,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     _buildTextField(
                       receiverAccountController,
                       "Receiver's Account No",
+                      keyboardType: TextInputType.number,
                       focusNode: receiverAccountFocus,
                       errorText: receiverValidationMessage,
                     ),

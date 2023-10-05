@@ -78,20 +78,25 @@ class _ScanqrState extends State<Scanqr> {
                         print("barcodes");
                         print(barcodes.toString());
                         print(image);
+                        String? qrCodeData =" ";
                         /*
                         String code = capture.raw ?? '---'; //rawValue ?? '---';*/
                         if (barcodes.isNotEmpty) {
                           // Assuming you want to use the first detected barcode
-                          String? qrCodeData = barcodes.first.rawValue;
+                           qrCodeData = barcodes.first.rawValue;
 
                           // Navigate to the QRPayment page and pass the scanned QR code data
-                          Navigator.push(
+                          /*Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  QRPayment(qrData: qrCodeData),
+                                  //QRPayment(qrData: qrCodeData),
+                              QRPayment(),
                             ),
-                          );
+                          );*/
+                          Navigator.pushNamed(context, '/qr_payment',arguments: {
+                            'qrCodeData' : qrCodeData
+                          });
                           isScanCompleted = true;
                           //Navigator.push(context,MaterialPageRoute(builder: (context) => QRPayment()));/**/ // '/qr_payment',{code: code});
                         }
