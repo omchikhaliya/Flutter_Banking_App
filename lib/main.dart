@@ -35,6 +35,6 @@ void main() async {
     '/profile': (context) => Profile(),
     '/transaction': (context) => TransactionPage(),
     '/scan_qr': (context) => const Scanqr(),
-    //'/qr_payment' : (context) => const QRPayment(code: null,),
+    '/qr_payment' : (context) => const QRPayment(),
   }));
 }
