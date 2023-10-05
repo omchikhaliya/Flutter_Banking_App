@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:banking_application/models/cutomers.dart';
+import 'package:banking_application/models/account.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,6 +15,12 @@ class _HomeState extends State<Home> {
 
   String name1="";
   String CustId = "";
+  String account_holder = "";
+  String account_no = "";
+  String card_no = "";
+  Customer customer_info = Customer.nothing();
+  Account account_info = Account.nothing();
+
 
   void setvariables() async {
     super.initState();
@@ -21,6 +30,21 @@ class _HomeState extends State<Home> {
     CustId = pref.getString('id') ?? '';
     // pref.setString('name', customerName);
     // pref.setString('id', customerId);
+
+    CollectionReference customer = FirebaseFirestore.instance.collection('customers');
+    QuerySnapshot customerQuery = await customer
+        .where('customer_ID', isEqualTo: CustId)
+        .get();
+    final document = customerQuery.docs[0].data() as Map;
+    account_holder = (document)['name'];
+    CollectionReference account = FirebaseFirestore.instance.collection('accounts');
+    QuerySnapshot accountQuery = await account
+        .where('customer_ID', isEqualTo: CustId)
+        .get();
+    customer_info = Customer.fromMap(document);
+    final document1 = accountQuery.docs[0].data() as Map;
+    account_info = Account.fromMap(document1);
+
   }
 
   @override
@@ -30,17 +54,29 @@ class _HomeState extends State<Home> {
 
   bool isAccountDetailsExpanded = false;
 
+  Future<Customer> fetchuserdata() async {
+    CollectionReference customer = FirebaseFirestore.instance.collection('customers');
+    QuerySnapshot customerQuery = await customer
+        .where('customer_ID', isEqualTo: CustId)
+        .get();
+    final document = customerQuery.docs[0].data() as Map;
+    final data = Customer.fromMap(document);
+    return data;
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('My Bank'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.account_circle_outlined),
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
+            onPressed: ()async {
+              Customer customer = await fetchuserdata();
+              Navigator.pushNamed(context, '/profile', arguments: customer);
               //Navigator.pushNamed(context, '/profile');
             },
           ),
@@ -115,7 +151,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       trailing: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 500),
+                        duration: Duration(milliseconds: 300),
                         transitionBuilder: (child, animation) {
                           return ScaleTransition(
                             scale: animation,
@@ -140,24 +176,24 @@ class _HomeState extends State<Home> {
                       },
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 50),
+                      duration: Duration(milliseconds: 300),
                       height: isAccountDetailsExpanded ? 220 : 0,
-                      child: const Column(
+                      child: Column(
                         children: <Widget>[
                           ListTile(
                             leading: Icon(Icons.account_circle),
                             title: Text('Account Holder'),
-                            subtitle: Text('John Doe'),
+                            subtitle: Text(customer_info.name.toString()),
                           ),
                           ListTile(
                             leading: Icon(Icons.account_balance),
                             title: Text('Account Number'),
-                            subtitle: Text('1234567890'),
+                            subtitle: Text(account_info.account_no.toString()),
                           ),
                           ListTile(
                             leading: Icon(Icons.credit_card),
                             title: Text('Card Number'),
-                            subtitle: Text('**** **** **** 1234'),
+                            subtitle: Text(account_info.debit_card_no.toString()),
                           ),
                         ],
                       ),

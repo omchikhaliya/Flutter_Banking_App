@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:banking_application/models/cutomers.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -8,24 +9,28 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final url = "meshivanshsingh.me";
-  final email = "me.shivansh007@gmail.com";
+
+  //final url = "meshivanshsingh.me";
+ // final email = ;
   final phone = "90441539202"; // not real number :)
   final location = "Jamnagar, India";
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)?.settings.arguments as Customer;
+    final baseurl = "assets/images/";
+    final fullurl = data.url;
     return Scaffold(
         backgroundColor: Colors.blueGrey[800],
         body: SafeArea(
           minimum: const EdgeInsets.only(top: 100),
           child: Column(
             children: <Widget>[
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/images/logo_ba.jpg'),
+                backgroundImage: AssetImage('assets/images/$fullurl'),
               ),
-              const Text(
-                "Devanshu Chipani",
+              Text(
+                data.name.toString(),
                 style: TextStyle(
                   fontSize: 40.0,
                   color: Colors.white,
@@ -44,13 +49,13 @@ class _ProfileState extends State<Profile> {
 
               // we will be creating a new widget name info carrd
 
-              InfoCard(text: phone, icon: Icons.phone, onPressed: () async {}),
-              InfoCard(text: url, icon: Icons.web, onPressed: () async {}),
+              InfoCard(text: data.mobileNo.toString(), icon: Icons.phone, onPressed: () async {}),
+              InfoCard(text: data.dob.toString(), icon: Icons.web, onPressed: () async {}),
               InfoCard(
-                  text: location,
+                  text: data.address.toString(),
                   icon: Icons.location_city,
                   onPressed: () async {}),
-              InfoCard(text: email, icon: Icons.email, onPressed: () async {}),
+              InfoCard(text: data.email.toString(), icon: Icons.email, onPressed: () async {}),
             ],
           ),
         ));

@@ -1,14 +1,16 @@
 class Customer {
-  String address;
-  String dob;
-  String name;
-  String mobileNo;
-  String panNo;
-  String aadharCardNo;
-  String customerID;
-  String mPin;
-  String email;
+  String? address;
+  String? dob;
+  String? name;
+  int mobileNo = 0;
+  String? panNo;
+  int aadharCardNo = 0;
+  String? customerID;
+  String? mPin;
+  String? email;
+  String? url;
 
+  Customer.nothing();
   Customer({
     required this.address,
     required this.dob,
@@ -19,9 +21,10 @@ class Customer {
     required this.customerID,
     required this.mPin,
     required this.email,
+    required this.url
   });
 
-  factory Customer.fromMap(Map<String, dynamic> map) {
+  factory Customer.fromMap(Map<dynamic, dynamic> map) {
     return Customer(
       address: map['address'],
       dob: map['dob'],
@@ -32,6 +35,7 @@ class Customer {
       customerID: map['customer_ID'],
       mPin: map['MPIN'],
       email: map['email'],
+      url : map['url'],
     );
   }
 }
