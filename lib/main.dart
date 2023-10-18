@@ -15,7 +15,7 @@ import 'package:banking_application/pages/genrateqrcode.dart';
 import 'package:banking_application/models/account.dart';
 import 'package:banking_application/pages/profile.dart';
 import 'package:banking_application/pages/scanqr.dart';
-
+import 'package:banking_application/pages/QrPay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +26,8 @@ void main() async {
   runApp(MaterialApp(
 
       routes: {
-    '/' : (context) => Loading(),
-    //'/' : (context) => Signup(),
+    //'/' : (context) => Loading(),
+    '/' : (context) => QRPayment(),
     '/login_page': (context) => const LoginPage(),
     '/home': (context) => const Home(),
     '/sign_up': (context) => const Signup(),
@@ -35,6 +35,7 @@ void main() async {
     '/profile': (context) => Profile(),
     '/transaction': (context) => TransactionPage(),
     '/scan_qr': (context) => const Scanqr(),
-    '/qr_payment' : (context) => const QRPayment(),
+    '/qr_payment' : (context) => QRPayment(),
+    '/qr_pay' : (context) => QrPay(),
   }));
 }

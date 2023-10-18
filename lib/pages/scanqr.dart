@@ -94,6 +94,7 @@ class _ScanqrState extends State<Scanqr> {
                               QRPayment(),
                             ),
                           );*/
+                           isScanCompleted = false;
                           Navigator.pushNamed(context, '/qr_payment',arguments: {
                             'qrCodeData' : qrCodeData
                           });

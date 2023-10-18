@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
         .get();
     final document = customerQuery.docs[0].data() as Map;
     account_holder = (document)['name'];
+
     CollectionReference account = FirebaseFirestore.instance.collection('accounts');
     QuerySnapshot accountQuery = await account
         .where('customer_ID', isEqualTo: CustId)
@@ -44,6 +45,7 @@ class _HomeState extends State<Home> {
     customer_info = Customer.fromMap(document);
     final document1 = accountQuery.docs[0].data() as Map;
     account_info = Account.fromMap(document1);
+    print(document1);
 
   }
 
@@ -70,7 +72,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Bank'),
+        title: Text('Bharat National Bank'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.account_circle_outlined),
@@ -97,7 +99,7 @@ class _HomeState extends State<Home> {
                   color: Colors.blue,
                 ),
                 child: Text(
-                  'My Bank',
+                  'Bharat National Bank',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -178,24 +180,26 @@ class _HomeState extends State<Home> {
                     AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       height: isAccountDetailsExpanded ? 220 : 0,
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(Icons.account_circle),
-                            title: Text('Account Holder'),
-                            subtitle: Text(customer_info.name.toString()),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.account_balance),
-                            title: Text('Account Number'),
-                            subtitle: Text(account_info.account_no.toString()),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.credit_card),
-                            title: Text('Card Number'),
-                            subtitle: Text(account_info.debit_card_no.toString()),
-                          ),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.account_circle),
+                              title: Text('Account Holder'),
+                              subtitle: Text(customer_info.name.toString()),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.account_balance),
+                              title: Text('Account Number'),
+                              subtitle: Text(account_info.account_no.toString()),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.credit_card),
+                              title: Text('Card Number'),
+                              subtitle: Text(account_info.debit_card_no.toString()),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
