@@ -28,8 +28,8 @@ void main() async {
   runApp(MaterialApp(
 
       routes: {
-    // '/' : (context) => Loading(),
-    '/' : (context) => Signup(),
+    // '/' : (context) => Signup(),
+    '/' : (context) => Loading(),
     '/login_page': (context) => const LoginPage(),
     '/home': (context) => const Home(),
     '/sign_up': (context) => const Signup(),

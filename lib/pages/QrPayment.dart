@@ -8,6 +8,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:banking_application/models/cutomers.dart';
 import 'package:banking_application/models/account.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:banking_application/pages/scanqr.dart';
 
 late final String code;
 
@@ -70,6 +71,8 @@ class _QRPaymentState extends State<QRPayment> {
     // pref.setString('id', customerId);
 
     //CustId = '111112';
+
+
     CollectionReference customer = FirebaseFirestore.instance.collection('customers');
     QuerySnapshot customerQuery = await customer
         .where('customer_ID', isEqualTo: QrData)

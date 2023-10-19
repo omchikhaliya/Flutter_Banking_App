@@ -329,14 +329,19 @@ class _HomeState extends State<Home> {
         .get();
     final document = customerQuery.docs[0].data() as Map;
     account_holder = (document)['name'];
+    customer_info = Customer.fromMap(document);
+    String documentId1 = customerQuery.docs[0].id;
+    print("Document ID1: $documentId1");
 
     CollectionReference account = FirebaseFirestore.instance.collection('accounts');
     QuerySnapshot accountQuery = await account
         .where('customer_ID', isEqualTo: CustId)
         .get();
-    customer_info = Customer.fromMap(document);
+    String documentId = accountQuery.docs[0].id;
+
     final document1 = accountQuery.docs[0].data() as Map;
     account_info = Account.fromMap(document1);
+    print("Document ID: $documentId");
     print(document1);
 
   }

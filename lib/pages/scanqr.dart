@@ -44,7 +44,7 @@ class _ScanqrState extends State<Scanqr> {
                     Text('Place the Qr code in the area.',
                       style: TextStyle(
                         color: Colors.black87,
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                       ),

@@ -10,7 +10,7 @@ class QRScannerOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     double scanArea = (MediaQuery.of(context).size.width < 400 ||
         MediaQuery.of(context).size.height < 400)
-        ? 200.0
+        ? 280.0
         : 330.0;
     return Stack(children: [
       ColorFiltered(
@@ -114,8 +114,8 @@ class BorderPainter extends CustomPainter {
 }
 
 class BarReaderSize {
-  static double width = 200;
-  static double height = 200;
+  static double width = 300;
+  static double height = 300;
 }
 
 class OverlayWithHolePainter extends CustomPainter {
