@@ -1,3 +1,4 @@
+import 'package:banking_application/pages/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,9 +6,12 @@ import 'package:banking_application/models/account.dart';
 import 'package:banking_application/models/transactions.dart';
 import 'package:intl/intl.dart';
 
+import '../models/cutomers.dart';
+
 
 Account account_info = Account.nothing();
-
+String sender_name = "";
+String receiver_name = "";
 class transactionHistory extends StatefulWidget {
   const transactionHistory({Key? key});
 
@@ -16,9 +20,39 @@ class transactionHistory extends StatefulWidget {
 }
 
 class _transactionHistoryState extends State<transactionHistory> {
-
   @override
   Widget build(BuildContext context) {
+
+    Future<void> fetchname(String? sender_account_no, String? receiver_account_no)async{
+
+      CollectionReference account = FirebaseFirestore.instance.collection('accounts');
+      QuerySnapshot accountQuery = await account
+          .where('account_no', isEqualTo: sender_account_no)
+          .get();
+      final document1 = accountQuery.docs[0].data() as Map;
+      final account_info1 = Account.fromMap(document1);
+      CollectionReference customer = FirebaseFirestore.instance.collection('customers');
+      QuerySnapshot customerQuery = await customer
+          .where('customer_ID', isEqualTo: account_info1.customer_ID).get();
+      final document2 = customerQuery.docs[0].data() as Map;
+      final customer_info1 = Customer.fromMap(document2);
+      sender_name = customer_info1.name!;
+      print(sender_name);
+      accountQuery = await account
+          .where('account_no', isEqualTo: receiver_account_no)
+          .get();
+      final document3 = accountQuery.docs[0].data() as Map;
+      final account_info2 = Account.fromMap(document3);
+      customerQuery = await customer
+          .where('customer_ID', isEqualTo: account_info2.customer_ID).get();
+      final document4 = customerQuery.docs[0].data() as Map;
+      final customer_info2 = Customer.fromMap(document4);
+      receiver_name = customer_info2.name!;
+      print(receiver_name);
+      // List<String> lst = [sender_name, receiver_name];
+      // return lst;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Transaction History'),
@@ -42,6 +76,8 @@ class _transactionHistoryState extends State<transactionHistory> {
 
                 //Convert the timestamp to DateTime
                 DateTime transactionDate = transaction.date!.toDate();
+
+                // fetchname(transaction.sender_account_no, transaction.receiver_account_no);
 
                 // Format the DateTime object to a human-readable date string
                 String formattedDate = DateFormat.yMMMd().format(transactionDate);
@@ -88,6 +124,8 @@ class _transactionHistoryState extends State<transactionHistory> {
         .where('customer_ID', isEqualTo: CustId)
         .get();
     final document1 = accountQuery.docs[0].data() as Map;
+    print("--------------------");
+    print(document1);
     account_info = Account.fromMap(document1);
     CollectionReference transaction = FirebaseFirestore.instance.collection('transaction');
     QuerySnapshot transactionQuery = await transaction
@@ -114,6 +152,7 @@ class _transactionHistoryState extends State<transactionHistory> {
     }
     print(transactions);
     transactions.sort((a, b) => a.date!.toDate().compareTo(b.date!.toDate()));
+    transactions = transactions.reversed.toList();
     return transactions;
   }
 }

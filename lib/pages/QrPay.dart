@@ -117,6 +117,17 @@ class _QrPayState extends State<QrPay> {
 
   Future<void> handlesubmit(String senderAccount, String receiverAccount,
       String amount, String remark, String transactionPin) async {
+    if(senderAccount == receiverAccount){
+      setState(() {
+        pinValidationMessage = "Sender and Receiver can't be same";
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(
+          content: Text(pinValidationMessage!),
+
+        ));
+      });
+      return;
+    }
     final parsedAmount = int.parse(amount);
     final parsedpin = int.parse(transactionPin);
     DateTime now = new DateTime.now();
@@ -151,23 +162,48 @@ class _QrPayState extends State<QrPay> {
         final new_bal = receiver_bal + parsedAmount;
         await receiver_doc.update({'balance': new_bal});
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar( SnackBar(
-          content: Text('Payment Successful.'),
-        ));
-        Navigator.pushReplacementNamed(
-            context, '/home');
-
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Transaction Successful'),
+              content: Text('Amount Transferred Successfully.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    //Navigator.pushNamed(context, '/profile');
+                    Navigator.of(context).pop();
+                    Navigator.pushReplacementNamed(context, '/transactionHistory');
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
-    } else {
-      setState(() {
-        pinValidationMessage = "PIN is Incorrect";
-        ScaffoldMessenger.of(context)
-            .showSnackBar( SnackBar(
-          content: Text(pinValidationMessage!),
-
-        ));
-      });
+      else {
+        setState(() {
+          // pinValidationMessage = "PIN is Incorrect";
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Invalid PIN'),
+                content: Text('Please Enter a Valid Pin.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+      }
     }
   }
 

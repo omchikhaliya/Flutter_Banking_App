@@ -44,96 +44,118 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               onPressed: () async {
                 // Handle update logic here
                 String updatedEmail = _emailController.text;
-                int? updatedMobile = int.tryParse(_mobileController.text);
+                String updatedMobile = _mobileController.text;
                 String updatedAddress = _addressController.text;
 
-                final pref = await SharedPreferences.getInstance();
-                final CustId = pref.getString('id') ?? '';
-                if(updatedAddress != ""){
-                  CollectionReference customers = FirebaseFirestore.instance.collection('customers');
+                if(updatedEmail.isNotEmpty || updatedAddress.isNotEmpty || updatedMobile.isNotEmpty){
+                  final pref = await SharedPreferences.getInstance();
+                  final CustId = pref.getString('id') ?? '';
+                  if(updatedAddress.isNotEmpty){
+                    CollectionReference customers = FirebaseFirestore.instance.collection('customers');
 
-                  QuerySnapshot customerQuery = await customers
-                      .where('customer_ID', isEqualTo: CustId)
-                      .get();
+                    QuerySnapshot customerQuery = await customers
+                        .where('customer_ID', isEqualTo: CustId)
+                        .get();
 
-                  if (customerQuery.docs.isNotEmpty) {
-                    // Get the reference to the first document with matching customer_ID
-                    DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
+                    if (customerQuery.docs.isNotEmpty) {
+                      // Get the reference to the first document with matching customer_ID
+                      DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
 
-                    // Update the 'address' field in the document
-                    await customerDocRef.update({
-                      'address': updatedAddress,
-                    });
+                      // Update the 'address' field in the document
+                      await customerDocRef.update({
+                        'address': updatedAddress,
+                      });
 
-                    print('Address updated successfully.');
-                  } else {
-                    print('Customer not found.');
+                      print('Address updated successfully.');
+                    } else {
+                      print('Customer not found.');
+                    }
+
+                  }
+                  if(updatedMobile.isNotEmpty){
+                    CollectionReference customers = FirebaseFirestore.instance.collection('customers');
+
+                    QuerySnapshot customerQuery = await customers
+                        .where('customer_ID', isEqualTo: CustId)
+                        .get();
+
+                    if (customerQuery.docs.isNotEmpty) {
+                      // Get the reference to the first document with matching customer_ID
+                      DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
+
+                      // Update the 'address' field in the document
+                      await customerDocRef.update({
+                        'mobile_no': int.parse(updatedMobile),
+                      });
+
+                      print('Mobile No updated successfully.');
+                    } else {
+                      print('Customer not found.');
+                    }
+                  }
+                  if(updatedEmail.isNotEmpty){
+                    CollectionReference customers = FirebaseFirestore.instance.collection('customers');
+
+                    QuerySnapshot customerQuery = await customers
+                        .where('customer_ID', isEqualTo: CustId)
+                        .get();
+
+                    if (customerQuery.docs.isNotEmpty) {
+                      // Get the reference to the first document with matching customer_ID
+                      DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
+
+                      // Update the 'address' field in the document
+                      await customerDocRef.update({
+                        'email': updatedEmail,
+                      });
+
+                      print('Email-ID updated successfully.');
+                    } else {
+                      print('Customer not found.');
+                    }
                   }
 
+                  // Show a confirmation dialog or navigate back to the previous screen
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Profile Updated'),
+                        content: Text('Your profile has been updated successfully.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              //Navigator.pushNamed(context, '/profile');
+                              Navigator.of(context).pop();
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
-                if(updatedMobile != ""){
-                  CollectionReference customers = FirebaseFirestore.instance.collection('customers');
-
-                  QuerySnapshot customerQuery = await customers
-                      .where('customer_ID', isEqualTo: CustId)
-                      .get();
-
-                  if (customerQuery.docs.isNotEmpty) {
-                    // Get the reference to the first document with matching customer_ID
-                    DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
-
-                    // Update the 'address' field in the document
-                    await customerDocRef.update({
-                      'mobile_no': updatedMobile,
-                    });
-
-                    print('Mobile No updated successfully.');
-                  } else {
-                    print('Customer not found.');
-                  }
+                else{
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Enter Valid Data'),
+                        content: Text('All Fields are Empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              //Navigator.pushNamed(context, '/profile');
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
-                if(updatedEmail != ""){
-                  CollectionReference customers = FirebaseFirestore.instance.collection('customers');
-
-                  QuerySnapshot customerQuery = await customers
-                      .where('customer_ID', isEqualTo: CustId)
-                      .get();
-
-                  if (customerQuery.docs.isNotEmpty) {
-                    // Get the reference to the first document with matching customer_ID
-                    DocumentReference customerDocRef = customers.doc(customerQuery.docs[0].id);
-
-                    // Update the 'address' field in the document
-                    await customerDocRef.update({
-                      'email': updatedEmail,
-                    });
-
-                    print('Email-ID updated successfully.');
-                  } else {
-                    print('Customer not found.');
-                  }
-                }
-
-                // Show a confirmation dialog or navigate back to the previous screen
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Profile Updated'),
-                      content: Text('Your profile has been updated successfully.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            //Navigator.pushNamed(context, '/profile');
-                            Navigator.of(context).pop();
-                            Navigator.pushReplacementNamed(context, '/home');
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
               },
               child: Text('Update Profile'),
             ),
