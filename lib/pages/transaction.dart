@@ -1,17 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:banking_application/models/account.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Widget _buildTextField(TextEditingController controller, String label,
-    {bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    FocusNode? focusNode,
-    String? errorText}) {
+// Widget _buildTextField(TextEditingController controller, String label,
+//     {bool obscureText = false,
+//     TextInputType keyboardType = TextInputType.text,
+//     FocusNode? focusNode,
+//     String? errorText}) {
+//   return TextFormField(
+//     controller: controller,
+//     decoration: InputDecoration(
+//       labelText: label,
+//       border: OutlineInputBorder(
+//         borderSide:  BorderSide(color: Colors.black),
+//         borderRadius: BorderRadius.circular(20.0),
+//       ),
+//       errorText: errorText,
+//     ),
+//     obscureText: obscureText,
+//     keyboardType: keyboardType,
+//     focusNode: focusNode,
+//   );
+// }
+
+Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    {
+      bool obscureText = false,
+      TextInputType keyboardType = TextInputType.text,
+      FocusNode? focusNode,
+      String? errorText,
+      bool enabled = true, // Add this parameter for enabling/disabling the field
+    }) {
   return TextFormField(
     controller: controller,
     decoration: InputDecoration(
       labelText: label,
       border: OutlineInputBorder(
-        borderSide:  BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: Colors.black),
         borderRadius: BorderRadius.circular(20.0),
       ),
       errorText: errorText,
@@ -19,7 +47,24 @@ Widget _buildTextField(TextEditingController controller, String label,
     obscureText: obscureText,
     keyboardType: keyboardType,
     focusNode: focusNode,
+    enabled: enabled, // Set the enabled property
   );
+}
+
+Account account_info = Account.nothing();
+String sender_account_no = "";
+
+Future<void> initializevalues()async {
+  final pref = await SharedPreferences.getInstance();
+  final CustId = pref.getString('id') ?? '';
+  CollectionReference account = FirebaseFirestore.instance.collection('accounts');
+  QuerySnapshot accountQuery = await account
+      .where('customer_ID', isEqualTo: CustId)
+      .get();
+  final document1 = accountQuery.docs[0].data() as Map;
+  account_info = Account.fromMap(document1);
+  sender_account_no = account_info.account_no!;
+  print(sender_account_no);
 }
 
 class TransactionPage extends StatefulWidget {
@@ -28,6 +73,7 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
+
   TextEditingController senderAccountController = TextEditingController();
   TextEditingController receiverAccountController = TextEditingController();
   TextEditingController amountController = TextEditingController();
@@ -43,6 +89,7 @@ class _TransactionPageState extends State<TransactionPage> {
   String? amountValidationMessage;
   String? pinValidationMessage;
 
+
   @override
   void initState() {
     super.initState();
@@ -51,10 +98,10 @@ class _TransactionPageState extends State<TransactionPage> {
       senderValidationMessage;
     });
     // Attach listeners to the fields to trigger validations when leaving the field
-    senderAccountFocus.addListener(() {
-      validateSenderAccount(
-          senderAccountController.text, receiverAccountController.text);
-    });
+    // senderAccountFocus.addListener(() {
+    //   validateSenderAccount(
+    //       senderAccountController.text, receiverAccountController.text);
+    // });
 
     receiverAccountFocus.addListener(() {
       validateReceiverAccount(
@@ -64,6 +111,9 @@ class _TransactionPageState extends State<TransactionPage> {
     amountFocus.addListener(() {
       validateAmount(amountController.text, senderAccountController.text);
     });
+
+    initializevalues();
+    senderAccountController.text = sender_account_no;
   }
 
   Future<void> validateSenderAccount(
@@ -195,7 +245,7 @@ class _TransactionPageState extends State<TransactionPage> {
       final pin = (document as Map)['transaction_pin'];
       if (pin == parsedpin) {
         CollectionReference transaction =
-            FirebaseFirestore.instance.collection('transaction');
+        FirebaseFirestore.instance.collection('transaction');
         await transaction.add({
           'sender_account_no': senderAccount,
           'receiver_account_no': receiverAccount,
@@ -209,17 +259,50 @@ class _TransactionPageState extends State<TransactionPage> {
 
         await sender_doc.update({'balance': rem_bal});
         QuerySnapshot receiver =
-            await account.where('account_no', isEqualTo: receiverAccount).get();
+        await account.where('account_no', isEqualTo: receiverAccount).get();
         final DocumentReference receiver_doc = receiver.docs[0].reference;
         final receiver_doc_data = receiver.docs[0].data();
         final receiver_bal = (receiver_doc_data as Map)['balance'];
         final new_bal = receiver_bal + parsedAmount;
         await receiver_doc.update({'balance': new_bal});
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Transaction Successful'),
+                content: Text('Amount Transferred Successfully'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      //Navigator.pushNamed(context, '/profile');
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacementNamed(context, '/home');
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            });
       }
-    } else {
-      setState(() {
-        pinValidationMessage = "PIN is Incorrect";
-      });
+      else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Transaction Failed'),
+                content: Text('Incorrect PIN entered'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      //Navigator.pushNamed(context, '/profile');
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            });
+      }
     }
   }
 
@@ -251,6 +334,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       keyboardType: TextInputType.number,
                       focusNode: senderAccountFocus,
                       errorText: senderValidationMessage,
+                      enabled: false, // Set the field as disabled
                     ),
                     SizedBox(height: 16.0),
                     _buildTextField(

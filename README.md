@@ -1,6 +1,15 @@
 # banking_application
+Mobile Banking Application developed using Flutter.
 
-A new Flutter project.
+Our Banking Application has all the basics features which any normal banking application has such as 
+1. First Time SignUp with OTP Verification 
+2. Login(with Biometrics) 
+3. View Account Details & Balance 
+4. Make Transaction 
+5. Payment through QR Code 
+6. View Profile 
+7. Update Profile 
+8. View Transaction History
 
 ## Getting Started
 

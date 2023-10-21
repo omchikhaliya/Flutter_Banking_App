@@ -1,21 +1,18 @@
-//import 'dart:js';
-
 import 'package:banking_application/pages/QrPayment.dart';
+import 'package:banking_application/pages/UpdateProfilePage.dart';
 import 'package:banking_application/pages/transaction.dart';
+import 'package:banking_application/pages/transactionHistory.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_application/pages/Loading.dart';
 import 'package:banking_application/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:banking_application/pages/home.dart';
-import 'package:banking_application/pages/authentication.dart';
 import 'package:banking_application/pages/signup.dart';
 import 'package:banking_application/pages/genrateqrcode.dart';
-import 'package:banking_application/models/account.dart';
 import 'package:banking_application/pages/profile.dart';
 import 'package:banking_application/pages/scanqr.dart';
-
+import 'package:banking_application/pages/QrPay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +23,8 @@ void main() async {
   runApp(MaterialApp(
 
       routes: {
+    // '/' : (context) => Signup(),
     '/' : (context) => Loading(),
-    //'/' : (context) => Signup(),
     '/login_page': (context) => const LoginPage(),
     '/home': (context) => const Home(),
     '/sign_up': (context) => const Signup(),
@@ -35,6 +32,9 @@ void main() async {
     '/profile': (context) => Profile(),
     '/transaction': (context) => TransactionPage(),
     '/scan_qr': (context) => const Scanqr(),
-    '/qr_payment' : (context) => const QRPayment(),
+        '/transactionHistory' : (context) => const transactionHistory(),
+        '/updateProfile' : (context) => UpdateProfilePage(),
+    '/qr_payment' : (context) => QRPayment(),
+    '/qr_pay' : (context) => QrPay(),
   }));
 }

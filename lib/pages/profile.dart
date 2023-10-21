@@ -10,10 +10,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  //final url = "meshivanshsingh.me";
- // final email = ;
-  final phone = "90441539202"; // not real number :)
-  final location = "Jamnagar, India";
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)?.settings.arguments as Customer;

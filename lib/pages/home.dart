@@ -37,13 +37,20 @@ class _HomeState extends State<Home> {
         .get();
     final document = customerQuery.docs[0].data() as Map;
     account_holder = (document)['name'];
+    customer_info = Customer.fromMap(document);
+    String documentId1 = customerQuery.docs[0].id;
+    print("Document ID1: $documentId1");
+
     CollectionReference account = FirebaseFirestore.instance.collection('accounts');
     QuerySnapshot accountQuery = await account
         .where('customer_ID', isEqualTo: CustId)
         .get();
-    customer_info = Customer.fromMap(document);
+    String documentId = accountQuery.docs[0].id;
+
     final document1 = accountQuery.docs[0].data() as Map;
     account_info = Account.fromMap(document1);
+    print("Document ID: $documentId");
+    print(document1);
 
   }
 
@@ -70,7 +77,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Bank'),
+        title: Text('Bharat National Bank'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.account_circle_outlined),
@@ -83,7 +90,7 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // Add settings functionality here
+              Navigator.pushNamed(context, '/updateProfile');
             },
           ),
         ],
@@ -97,7 +104,7 @@ class _HomeState extends State<Home> {
                   color: Colors.blue,
                 ),
                 child: Text(
-                  'My Bank',
+                  'Bharat National Bank',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -106,7 +113,7 @@ class _HomeState extends State<Home> {
               ),
               ListTile(
                 leading: Icon(Icons.account_balance_wallet),
-                title: Text('Account Balance'),
+                title: Text('Account Details'),
                 onTap: () {
                   // Toggle account details
                   setState(() {
@@ -119,11 +126,7 @@ class _HomeState extends State<Home> {
                 title: Text('Transaction History'),
                 onTap: () {
                   // Navigate to transaction history page
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionHistoryPage()));
+                  Navigator.pushNamed(context, '/transactionHistory');
                 },
               ),
             ],
@@ -144,7 +147,7 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     ListTile(
                       title: Text(
-                        'Account Balance',
+                        'Account Details',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -160,13 +163,13 @@ class _HomeState extends State<Home> {
                         },
                         child: isAccountDetailsExpanded
                             ? Icon(
-                                Icons.keyboard_arrow_up,
-                                key: Key('up'),
-                              )
+                          Icons.keyboard_arrow_up,
+                          key: Key('up'),
+                        )
                             : Icon(
-                                Icons.keyboard_arrow_down,
-                                key: Key('down'),
-                              ),
+                          Icons.keyboard_arrow_down,
+                          key: Key('down'),
+                        ),
                       ),
                       onTap: () {
                         // Toggle account details
@@ -177,25 +180,32 @@ class _HomeState extends State<Home> {
                     ),
                     AnimatedContainer(
                       duration: Duration(milliseconds: 300),
-                      height: isAccountDetailsExpanded ? 220 : 0,
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: Icon(Icons.account_circle),
-                            title: Text('Account Holder'),
-                            subtitle: Text(customer_info.name.toString()),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.account_balance),
-                            title: Text('Account Number'),
-                            subtitle: Text(account_info.account_no.toString()),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.credit_card),
-                            title: Text('Card Number'),
-                            subtitle: Text(account_info.debit_card_no.toString()),
-                          ),
-                        ],
+                      height: isAccountDetailsExpanded ? 300 : 0,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.account_circle),
+                              title: Text('Account Holder'),
+                              subtitle: Text(customer_info.name.toString()),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.account_balance),
+                              title: Text('Account Number'),
+                              subtitle: Text(account_info.account_no.toString()),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.credit_card),
+                              title: Text('Card Number'),
+                              subtitle: Text(account_info.debit_card_no.toString()),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.currency_rupee_rounded),
+                              title: Text('Balance'),
+                              subtitle: Text(account_info.balance.toString()),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -236,55 +246,17 @@ class _HomeState extends State<Home> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Add transfer money functionality here
+                    Navigator.pushNamed(context, '/transactionHistory');
                   },
-                  icon: Icon(Icons.account_balance_wallet),
-                  label: Text('View All Accounts'),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Add request digital loan functionality here
-                  },
-                  icon: Icon(Icons.money),
-                  label: Text('Digital Loan'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Add request services functionality here
-                  },
-                  icon: Icon(Icons.message),
-                  label: Text('Request Services'),
+                  icon: Icon(Icons.history),
+                  label: Text('Transaction History'),
                 ),
               ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add floating action button functionality here
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 }
 
-class TransactionHistoryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Transaction History'),
-      ),
-      body: Center(
-        child: Text('Transaction history will be displayed here.'),
-      ),
-    );
-  }
-}

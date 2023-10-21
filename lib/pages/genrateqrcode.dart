@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +23,8 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
 
   String name1="";
   String CustId = "";
-  String custId = '';
+  String account_holder = "";
+  Customer customer_info = Customer.nothing();
 
   Future<void> setvariables() async {
 
@@ -31,10 +33,20 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
     CustId = await pref.getString('id') ?? '';
     print('name');
     print(name1);
-    custId = CustId;
     print('cust id');
     print(CustId);
-    print(custId);
+
+
+    CollectionReference customer = FirebaseFirestore.instance.collection('customers');
+    QuerySnapshot customerQuery = await customer
+        .where('customer_ID', isEqualTo: CustId)
+        .get();
+    final document = customerQuery.docs[0].data() as Map;
+    account_holder = (document)['name'];
+    customer_info = Customer.fromMap(document);
+    String documentId1 = customerQuery.docs[0].id;
+    print("Document ID1: $documentId1");
+
     // pref.setString('name', customerName);
     // pref.setString('id', customerId);
   }
@@ -57,22 +69,72 @@ class _GenerateQRCodeState extends State<GenerateQRCode> {
     //1setvariables();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generate QR Code'),
+        title: Text(""+account_holder+"'s QR Code",
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            QrImageView(
-              data: custId,
-              version: QrVersions.auto,
-              size: 200.0,
+            SizedBox(height: 10.0),
+            Text('Scan this QR code to Payment' ,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+              ),
             ),
-            SizedBox(height: 20.0),
-            Text('Scan this QR code to view account details'),
-            SizedBox(height: 20.0),
-            Text("Cust id"),
-            Text(custId),
+            SizedBox(height: 10.0),
+            Text('Mr. '+ account_holder,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+              ),
+            ),
+            SizedBox(height: 40.0),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(7,8),
+                    blurRadius: 6,
+                  )
+                ]
+              ),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Colors.black,
+                  width: 3,
+                ),
+                  borderRadius: BorderRadius.circular(14.0),
+                ),
+                shadowColor: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: QrImageView(
+                    data: CustId,
+                    version: QrVersions.auto,
+                    size: 250.0,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 30.0),
+            /*Text('Scan this QR code to view account details'),
+            SizedBox(height: 20.0),*/
+            //Text("Cust id"),
+            //Text(custId),
             /**/
           ],
         ),

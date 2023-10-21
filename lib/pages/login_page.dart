@@ -174,9 +174,10 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 22.0,
                           ),
                           controller: _password,
+                          keyboardType: TextInputType.number,
                           validator: (text) {
                             if (text == null || text.isEmpty) {
-                              return 'password is empty';
+                              return 'pin is empty';
                             }
                             return null;
                           },
