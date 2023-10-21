@@ -119,12 +119,23 @@ class _QrPayState extends State<QrPay> {
       String amount, String remark, String transactionPin) async {
     if(senderAccount == receiverAccount){
       setState(() {
-        pinValidationMessage = "Sender and Receiver can't be same";
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(
-          content: Text(pinValidationMessage!),
-
-        ));
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Action'),
+              content: Text('Both Sender and Receiver cannot be Same.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       });
       return;
     }
