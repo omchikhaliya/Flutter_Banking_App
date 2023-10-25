@@ -94,26 +94,30 @@ class _TransactionPageState extends State<TransactionPage> {
   void initState() {
     super.initState();
 
-    setState(() {
-      senderValidationMessage;
-    });
-    // Attach listeners to the fields to trigger validations when leaving the field
-    // senderAccountFocus.addListener(() {
-    //   validateSenderAccount(
-    //       senderAccountController.text, receiverAccountController.text);
-    // });
+    initializevalues().then((_) {
+      ;
+      setState(() {
+        senderValidationMessage;
 
-    receiverAccountFocus.addListener(() {
-      validateReceiverAccount(
-          receiverAccountController.text, senderAccountController.text);
-    });
+        // Attach listeners to the fields to trigger validations when leaving the field
+        // senderAccountFocus.addListener(() {
+        //   validateSenderAccount(
+        //       senderAccountController.text, receiverAccountController.text);
+        // });
 
-    amountFocus.addListener(() {
-      validateAmount(amountController.text, senderAccountController.text);
-    });
+        receiverAccountFocus.addListener(() {
+          validateReceiverAccount(
+              receiverAccountController.text, senderAccountController.text);
+        });
 
-    initializevalues();
-    senderAccountController.text = sender_account_no;
+        amountFocus.addListener(() {
+          validateAmount(amountController.text, senderAccountController.text);
+        });
+
+        initializevalues();
+        senderAccountController.text = sender_account_no;
+      });
+    });
   }
 
   Future<void> validateSenderAccount(
@@ -397,7 +401,10 @@ class _TransactionPageState extends State<TransactionPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        primary: Colors.blue,
+
+
+                          backgroundColor: Colors.black,
+
                       ),
                     ),
                   ],

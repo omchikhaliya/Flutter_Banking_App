@@ -221,15 +221,23 @@ class _HomeState extends State<Home> {
                     Navigator.pushNamed(context, '/genrate_qr');
                     // Add transfer money functionality here
                   },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(185.0, 35.0),
+                    backgroundColor: Colors.black,
+                  ),
                   icon: Icon(Icons.qr_code),
-                  label: Text('Qr code'),
+                  label: Text('QR Code'),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pushNamed(context, '/scan_qr');
                   },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(218.0, 35.0),
+                    backgroundColor: Colors.black,
+                  ),
                   icon: Icon(Icons.qr_code_scanner),
-                  label: Text('scan & pay'),
+                  label: Text('Scan & Pay'),
                 ),
               ],
             ),
@@ -241,10 +249,18 @@ class _HomeState extends State<Home> {
 
                     Navigator.pushNamed(context, '/transaction');
                   },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(185.0, 35.0),
+                    backgroundColor: Colors.black,
+                  ),
                   icon: Icon(Icons.send),
                   label: Text('Transfer Money'),
                 ),
                 ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(218.0, 35.0),
+                    backgroundColor: Colors.black,
+                  ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/transactionHistory');
                   },

@@ -41,6 +41,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             ),
             SizedBox(height: 32.0),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+
+                backgroundColor: Colors.black,
+              ),
               onPressed: () async {
                 // Handle update logic here
                 String updatedEmail = _emailController.text;
