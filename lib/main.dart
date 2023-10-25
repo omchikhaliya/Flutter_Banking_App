@@ -21,7 +21,7 @@ void main() async {
   );
 
   runApp(MaterialApp(
-
+      debugShowCheckedModeBanner: false,
       routes: {
     // '/' : (context) => Signup(),
     '/' : (context) => Loading(),

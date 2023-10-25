@@ -217,6 +217,9 @@ class _SignupState extends State<Signup> {
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       // Form is valid, proceed with verification and signup
@@ -255,6 +258,10 @@ class _SignupState extends State<Signup> {
                 ),
                 if (showOtpField)
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+
+                      backgroundColor: Colors.black,
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Form is valid, proceed with verification and signup
@@ -304,6 +311,9 @@ class _SignupState extends State<Signup> {
                 ),
                 if (verifyOtpField)
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Form is valid, proceed with signup
