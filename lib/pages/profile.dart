@@ -46,7 +46,7 @@ class _ProfileState extends State<Profile> {
               // we will be creating a new widget name info carrd
 
               InfoCard(text: data.mobileNo.toString(), icon: Icons.phone, onPressed: () async {}),
-              InfoCard(text: data.dob.toString(), icon: Icons.web, onPressed: () async {}),
+              InfoCard(text: data.dob.toString(), icon: Icons.cake, onPressed: () async {}),
               InfoCard(
                   text: data.address.toString(),
                   icon: Icons.location_city,
