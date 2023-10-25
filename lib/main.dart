@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:banking_application/pages/QrPayment.dart';
 import 'package:banking_application/pages/UpdateProfilePage.dart';
 import 'package:banking_application/pages/transaction.dart';
@@ -19,7 +20,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  // HttpOverrides.global =  MyHttpOverrides();
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
@@ -38,3 +39,11 @@ void main() async {
     '/qr_pay' : (context) => QrPay(),
   }));
 }
+
+// class MyHttpOverrides extends HttpOverrides{
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context){
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+//   }
+// }

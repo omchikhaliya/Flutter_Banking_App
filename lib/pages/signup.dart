@@ -2,9 +2,11 @@ import 'dart:ffi';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:email_otp/email_otp.dart';
+//import 'package:email_otp/email_otp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banking_application/pages/Loading.dart';
+import 'package:auth_handler/auth_handler.dart';
+
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -23,7 +25,10 @@ class _SignupState extends State<Signup> {
   TextEditingController emailController = TextEditingController();
   TextEditingController customerIdController = TextEditingController();
 
-  EmailOTP myauth = EmailOTP();
+  //EmailOTP myauth = EmailOTP();
+  //AuthHandler authHandler = AuthHandler();
+
+  //bool submitValid = false;
 
   final _formKey = GlobalKey<FormState>(); // GlobalKey for form validation
 
@@ -75,8 +80,9 @@ class _SignupState extends State<Signup> {
     }
   }
 
+  /*void sendOTP(String email) async {
 
-  void sendOTP(String email) async {
+    print("in otp, otp is sending");
     // Implement OTP sending logic here
     myauth.setConfig(
         appEmail: "bharatnationalbank@gmail.com",
@@ -85,7 +91,11 @@ class _SignupState extends State<Signup> {
         otpLength: 4,
         otpType: OTPType.digitsOnly
     );
-    if (await myauth.sendOTP() == true) {
+
+    //print("otp send verifying");
+    //myauth.sendOTP();
+    print("otp send");
+    /*if (await myauth.sendOTP() == true) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(
         content: Text("OTP has been sent"),
@@ -95,14 +105,15 @@ class _SignupState extends State<Signup> {
           .showSnackBar(const SnackBar(
         content: Text("Oops, OTP send failed"),
       ));
-    }
+    }*/
+
     setState(() {
       showOtpField = true;
     });
 
-  }
+  }*/
 
-  void verifyOTP() async {
+  /*void verifyOTP() async {
     if (await myauth.verifyOTP(otp: otpverifyController.text) == true) {
       verifyOtpField = true;
     ScaffoldMessenger.of(context)
@@ -115,10 +126,11 @@ class _SignupState extends State<Signup> {
     content: Text("Invalid OTP"),
     ));
     }
+
     setState(() {
 
     });
-  }
+  }*/
 
   void savepin() async
   {
@@ -175,6 +187,18 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the package
+
+    /*authHandler.config(
+      senderEmail: "bharatnationalbank@gmail.com",
+      senderName: "BHARAT NATIONAL BANK",
+      otpLength: 4,
+    );*/
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +251,15 @@ class _SignupState extends State<Signup> {
                       print(emailController.text.trim());
                       final email = await loginCustomer(customerIdController.text.trim());
                       if (email == emailController.text.trim()) {
-                        sendOTP(email);
+                        //sendOTP(email);
+                        print("in allowing pin to show");
+
+                        setState(() {
+                          verifyOtpField = true;
+                        });
+
+
+                        //authHandler.sendOtp(emailController.text);
                       } else {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
@@ -238,10 +270,10 @@ class _SignupState extends State<Signup> {
                       }
                     }
                   },
-                  child: Text("Get OTP"),
+                  child: Text("Set PIN"),
                 ),
                 SizedBox(height: 16.0),
-                if (showOtpField)
+                /*if (showOtpField)
                   TextFormField(
                     controller: otpverifyController,
                     decoration: InputDecoration(labelText: 'Enter OTP'),
@@ -266,7 +298,8 @@ class _SignupState extends State<Signup> {
                       if (_formKey.currentState!.validate()) {
                         // Form is valid, proceed with verification and signup
                         if (!verifyOtpField) {
-                          verifyOTP();
+                          //verifyOTP();
+                          authHandler.verifyOtp(otpController.text);
                         } else {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
@@ -277,7 +310,7 @@ class _SignupState extends State<Signup> {
                       }
                     },
                     child: Text("Verify OTP"),
-                  ),
+                  ),*/
                 SizedBox(height: 16.0),
                 if (verifyOtpField)
                   TextFormField(
